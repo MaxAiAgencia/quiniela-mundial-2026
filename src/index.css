@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 8%;       /* #0D1B2A navy */
+    --foreground: 0 0% 96%;         /* #F5F5F5 white */
+    --card: 210 20% 11%;
+    --card-foreground: 0 0% 96%;
+    --popover: 210 20% 9%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 351 83% 44%;         /* #C41230 red */
+    --primary-foreground: 0 0% 96%;
+    --secondary: 210 20% 16%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 210 20% 14%;
+    --muted-foreground: 210 10% 65%;
+    --accent: 40 52% 55%;           /* #C9A84C gold */
+    --accent-foreground: 210 20% 8%;
+    --destructive: 351 83% 44%;
+    --destructive-foreground: 0 0% 96%;
+    --border: 210 20% 20%;
+    --input: 210 20% 16%;
+    --ring: 351 83% 44%;
+    --radius: 0.625rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-fifa-navy text-fifa-white font-sans antialiased;
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3 {
+    @apply font-display tracking-wide;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar personalizado */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-navy-dark;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-fifa-gold/40 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-fifa-gold/70;
+  }
+
+  /* Glass card */
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl;
+  }
+
+  /* Gradiente FIFA */
+  .gradient-fifa {
+    background: linear-gradient(135deg, #0D1B2A 0%, #1a2e42 50%, #0D1B2A 100%);
+  }
+
+  .gradient-gold {
+    background: linear-gradient(135deg, #C9A84C 0%, #dfc06d 50%, #9a8038 100%);
+  }
+
+  /* Borde pulsante rojo para partidos en vivo */
+  .border-live {
+    @apply border-2 border-fifa-red animate-pulse-red;
+  }
+
+  /* Texto gradiente dorado */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #C9A84C, #dfc06d, #C9A84C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
