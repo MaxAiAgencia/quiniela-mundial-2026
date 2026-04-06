@@ -39,7 +39,11 @@ export default function LoginPage() {
         email,
         password,
         options: {
-          data: { username, display_name: username }
+          data: { 
+            username, 
+            display_name: username,
+            full_name: username 
+          }
         }
       })
       if (error) throw error

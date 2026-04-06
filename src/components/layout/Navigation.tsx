@@ -2,7 +2,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Home, Calendar, Globe2, MapPin, Shirt,
-  Trophy, Newspaper, Target, X, ShieldAlert,
+  Trophy, Target, X, ShieldAlert,
   User, LogOut, LogIn
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -15,7 +15,6 @@ const navItems = [
   { path: '/sedes',        label: 'Sedes',         icon: MapPin },
   { path: '/equipos',      label: 'Equipos',       icon: Shirt },
   { path: '/eliminatorias',label: 'Eliminatorias', icon: Trophy },
-  { path: '/noticias',     label: 'Noticias',      icon: Newspaper },
   { path: '/quiniela',     label: 'Quiniela',      icon: Target },
 ]
 

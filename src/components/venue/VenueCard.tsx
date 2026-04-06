@@ -24,15 +24,15 @@ export function VenueCard({ venue }: VenueCardProps) {
         />
         
         {/* Badges */}
-        <div className="absolute top-4 left-4 z-20 flex gap-2">
+        <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
           {venue.is_final && (
-            <span className="px-2 py-1 bg-fifa-gold text-navy-dark text-[10px] font-bold rounded uppercase tracking-wider">
-              Sede de la Final
+            <span className="px-2 py-1 bg-fifa-gold text-navy-dark text-[10px] font-black rounded shadow-lg uppercase tracking-wider animate-pulse border border-gold-light/50">
+              🏆 Gran Final
             </span>
           )}
           {venue.is_inaugural && (
-            <span className="px-2 py-1 bg-fifa-red text-white text-[10px] font-bold rounded uppercase tracking-wider">
-              Sede Inaugural
+            <span className="px-2 py-1 bg-fifa-red text-white text-[10px] font-black rounded shadow-lg uppercase tracking-wider border border-white/20">
+              🏟️ Inaugural
             </span>
           )}
         </div>

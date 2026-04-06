@@ -35,14 +35,14 @@ export const GroupTable: React.FC<GroupTableProps> = ({
         <table className="w-full text-left text-xs border-collapse">
           <thead>
             <tr className="bg-muted/50 border-b text-[10px] uppercase font-black text-muted-foreground whitespace-nowrap">
-              <th className="px-3 py-2 w-8 text-center">Pos</th>
-              <th className="px-3 py-2 min-w-[120px]">Equipo</th>
-              <th className="px-2 py-2 text-center w-8">PJ</th>
-              <th className="px-2 py-2 text-center w-8">G</th>
-              {!compact && <th className="px-2 py-2 text-center w-8">E</th>}
-              {!compact && <th className="px-2 py-2 text-center w-8">P</th>}
-              <th className="px-2 py-2 text-center w-10">DIF</th>
-              <th className="px-3 py-2 text-center w-10 text-foreground">PTS</th>
+              <th className="px-2 py-2 w-8 text-center text-[9px]">Pos</th>
+              <th className="px-2 py-2 min-w-[100px] text-[9px]">Equipo</th>
+              <th className="px-1 py-2 text-center w-6 text-[9px]">PJ</th>
+              <th className="px-1 py-2 text-center w-6 text-[9px]">G</th>
+              {!compact && <th className="px-1 py-2 text-center w-6 text-[9px]">E</th>}
+              {!compact && <th className="px-1 py-2 text-center w-6 text-[9px]">P</th>}
+              <th className="px-1 py-2 text-center w-8 text-[9px]">DIF</th>
+              <th className="px-2 py-2 text-center w-8 text-foreground text-[9px]">PTS</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-muted/50">

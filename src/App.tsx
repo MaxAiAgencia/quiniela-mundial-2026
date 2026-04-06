@@ -14,8 +14,6 @@ const SedesPage         = lazy(() => import('@/pages/SedesPage'))
 const EquiposPage       = lazy(() => import('@/pages/EquiposPage'))
 const EquipoDetallePage = lazy(() => import('@/pages/EquipoDetallePage'))
 const EliminatoriasPage = lazy(() => import('@/pages/EliminatoriasPage'))
-const NoticiasPage      = lazy(() => import('@/pages/NoticiasPage'))
-const NoticiaDetallePage= lazy(() => import('@/pages/NoticiaDetallePage'))
 const QuinielaPage      = lazy(() => import('@/pages/QuinielaPage'))
 const QuinielaNuevaPage = lazy(() => import('@/pages/QuinielaNuevaPage'))
 const QuinielaDetallePage=lazy(() => import('@/pages/QuinielaDetallePage'))
@@ -81,8 +79,6 @@ export default function App() {
               <Route path="equipos"             element={<EquiposPage />} />
               <Route path="equipos/:slug"       element={<EquipoDetallePage />} />
               <Route path="eliminatorias"       element={<EliminatoriasPage />} />
-              <Route path="noticias"            element={<NoticiasPage />} />
-              <Route path="noticias/:slug"      element={<NoticiaDetallePage />} />
               <Route path="quiniela"            element={<QuinielaPage />} />
               <Route path="quiniela/nueva"      element={<QuinielaNuevaPage />} />
               <Route path="quiniela/:id"        element={<QuinielaDetallePage />} />
