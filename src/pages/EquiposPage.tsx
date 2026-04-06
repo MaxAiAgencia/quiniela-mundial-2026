@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useTeams } from '@/hooks/useTeams'
 import { TeamCard } from '@/components/team/TeamCard'
 import { Confederation } from '@/types'

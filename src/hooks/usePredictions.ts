@@ -15,10 +15,10 @@ export function usePredictions(quinielaId: string) {
         .from('quiniela_predictions')
         .select('*')
         .eq('quiniela_id', quinielaId)
-        .eq('user_id', user?.id)
+        .eq('user_id', (user as any).id)
 
       if (error) throw error
-      return (data as QuinielaPrediction[]) || []
+      return (data as any) as QuinielaPrediction[] || []
     },
     enabled: !!quinielaId && !!user
   })

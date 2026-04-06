@@ -49,7 +49,7 @@ export const useQuinielaStore = create<QuinielaStore>()((set, get) => ({
 
     const { error } = await supabase
       .from('quiniela_predictions')
-      .upsert(upserts, { onConflict: 'quiniela_id,user_id,match_id' })
+      .upsert(upserts as any, { onConflict: 'quiniela_id,user_id,match_id' })
 
     set({ isSaving: false })
     if (error) throw error

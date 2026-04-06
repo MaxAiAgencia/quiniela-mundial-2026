@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Trophy, Target, DollarSign, Calendar, Info, ArrowRight, ShieldCheck, ChevronLeft, Users } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '@/lib/supabase'

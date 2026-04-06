@@ -28,7 +28,7 @@ export default function EquipoDetallePage() {
     )
   }
 
-  const { team, players, matches } = data
+  const { team, players, matches } = data as any
 
   return (
     <div className="pb-24 lg:pb-12">
@@ -100,7 +100,7 @@ export default function EquipoDetallePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {players.length > 0 ? (
-              players.map((player) => (
+              (players as any[]).map((player) => (
                 <motion.div 
                   key={player.id}
                   whileHover={{ x: 5 }}
@@ -137,7 +137,7 @@ export default function EquipoDetallePage() {
 
           <div className="space-y-4">
             {matches.length > 0 ? (
-              matches.map((match) => (
+              (matches as any[]).map((match) => (
                 <div 
                   key={match.id}
                   className="p-4 bg-navy-dark/50 border border-white/5 rounded-2xl space-y-3"

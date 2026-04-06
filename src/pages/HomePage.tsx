@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Trophy, Calendar, Users, TrendingUp, ArrowRight, ShieldCheck } from 'lucide-react'
+import { Trophy, Users, TrendingUp, ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useMatches } from '@/hooks/useMatches'
 import { useNews } from '@/hooks/useNews'

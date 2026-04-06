@@ -18,18 +18,18 @@ export function useQuiniela(id: string) {
       if (qError) throw qError
 
       // 2. Obtener mi participación
-      const { data: participation, error: pError } = await supabase
-        .from('quiniela_participants')
+      const { data: participation } = await (supabase
+        .from('quiniela_participants') as any)
         .select('*')
         .eq('quiniela_id', id)
-        .eq('user_id', user?.id)
+        .eq('user_id', user!.id)
         .single()
 
       // Si no existe participación, no es error crítico (no se ha unido)
       
       return {
-        ...quiniela,
-        my_participation: participation || null
+        ...(quiniela as any),
+        my_participation: (participation as any) || null
       }
     },
     enabled: !!id && !!user

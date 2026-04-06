@@ -339,7 +339,7 @@ export interface PredictionInput {
 
 // ─── SUPABASE DATABASE TYPES ─────────────────────────────────
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       venues: { Row: Venue; Insert: Omit<Venue, 'id' | 'created_at'>; Update: Partial<Venue> }

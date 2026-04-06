@@ -2,11 +2,9 @@ import { motion } from 'framer-motion'
 import { Trophy, Users, Star, ArrowRight, Plus, Info } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useQuinielas } from '@/hooks/useQuinielas'
-import { useAuthStore } from '@/stores/authStore'
 
 export default function QuinielaPage() {
   const { data: quinielas, isLoading, error } = useQuinielas()
-  const { user } = useAuthStore()
 
   if (isLoading) {
     return (

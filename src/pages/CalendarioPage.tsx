@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { DateStrip } from '@/components/calendar/DateStrip'
 import { MatchCard } from '@/components/match/MatchCard'
 import { useMatches } from '@/hooks/useMatches'
-import { format, startOfDay, endOfDay, addHours } from 'date-fns'
+import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 
 export default function CalendarioPage() {

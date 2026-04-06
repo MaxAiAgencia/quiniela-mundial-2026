@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Trophy, Save, RefreshCw, Filter, Search, Calendar as CalendarIcon } from 'lucide-react'
+import { Save, RefreshCw, Search, Calendar as CalendarIcon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
@@ -19,14 +19,14 @@ export default function AdminPartidosPage() {
         .from('matches')
         .select(`
           *,
-          home_team:home_team_id (name, country_code, image_url),
-          away_team:away_team_id (name, country_code, image_url),
+          home_team:home_team_id (name, country_code, shield_url),
+          away_team:away_team_id (name, country_code, shield_url),
           venue:venue_id (name, city)
         `)
-        .order('date', { ascending: true })
+        .order('scheduled_at', { ascending: true })
 
       if (error) throw error
-      return data
+      return data as any[]
     }
   })
 
@@ -36,10 +36,10 @@ export default function AdminPartidosPage() {
       const { error } = await (supabase
         .from('matches') as any)
         .update({ 
-          home_score: homeScore, 
-          away_score: awayScore, 
+          home_goals: homeScore, 
+          away_goals: awayScore, 
           status: status 
-        })
+        } as any)
         .eq('id', matchId)
 
       if (error) throw error
@@ -54,7 +54,7 @@ export default function AdminPartidosPage() {
 
   if (isLoading) return <div className="p-20 text-center animate-pulse font-black uppercase text-slate-300">Cargando partidos...</div>
 
-  const filteredMatches = matches?.filter(m => 
+  const filteredMatches = (matches as any[])?.filter(m => 
     m.home_team?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     m.away_team?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     m.venue?.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -95,8 +95,8 @@ export default function AdminPartidosPage() {
 }
 
 function MatchAdminCard({ match, onUpdate, isUpdating }: any) {
-  const [homeScore, setHomeScore] = useState(match.home_score || 0)
-  const [awayScore, setAwayScore] = useState(match.away_score || 0)
+  const [homeScore, setHomeScore] = useState(match.home_goals || 0)
+  const [awayScore, setAwayScore] = useState(match.away_goals || 0)
   const [status, setStatus] = useState(match.status || 'scheduled')
 
   return (
@@ -107,7 +107,7 @@ function MatchAdminCard({ match, onUpdate, isUpdating }: any) {
           <div className="w-full lg:w-48 space-y-4 text-center lg:text-left border-b lg:border-b-0 lg:border-r border-slate-50 pb-6 lg:pb-0 lg:pr-8">
              <div className="flex items-center justify-center lg:justify-start gap-2 text-[10px] font-black text-indigo-500 uppercase tracking-widest">
                 <CalendarIcon className="w-3 h-3" />
-                {format(new Date(match.date), 'dd MMM, HH:mm', { locale: es })}
+                {format(new Date(match.scheduled_at), 'dd MMM, HH:mm', { locale: es })}
              </div>
              <div>
                 <p className="text-xs font-bold text-slate-800 uppercase tracking-tight truncate">{match.venue?.name}</p>
@@ -129,7 +129,7 @@ function MatchAdminCard({ match, onUpdate, isUpdating }: any) {
           <div className="flex-1 flex items-center justify-center gap-4 md:gap-12 w-full">
             {/* Home */}
             <div className="flex flex-col items-center gap-3 w-32">
-               <img src={match.home_team?.image_url} alt="" className="w-16 h-12 object-cover rounded-xl shadow-sm border border-slate-100" />
+               <img src={match.home_team?.shield_url} alt="" className="w-16 h-12 object-contain rounded-xl shadow-sm border border-slate-100" />
                <p className="text-xs font-black uppercase tracking-tighter text-slate-900 text-center">{match.home_team?.name}</p>
                <input 
                  type="number"
@@ -143,7 +143,7 @@ function MatchAdminCard({ match, onUpdate, isUpdating }: any) {
 
             {/* Away */}
             <div className="flex flex-col items-center gap-3 w-32">
-               <img src={match.away_team?.image_url} alt="" className="w-16 h-12 object-cover rounded-xl shadow-sm border border-slate-100" />
+               <img src={match.away_team?.shield_url} alt="" className="w-16 h-12 object-contain rounded-xl shadow-sm border border-slate-100" />
                <p className="text-xs font-black uppercase tracking-tighter text-slate-900 text-center">{match.away_team?.name}</p>
                <input 
                  type="number"

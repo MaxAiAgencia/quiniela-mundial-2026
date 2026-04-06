@@ -1,4 +1,3 @@
-import React from 'react'
 import { EliminatoriasList } from '@/components/knockout/EliminatoriasList'
 
 export default function EliminatoriasPage() {

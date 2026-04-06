@@ -16,19 +16,19 @@ export function useTeamDetail(slug: string) {
       if (teamError) throw teamError
 
       // 2. Get players for this team
-      const { data: players, error: playersError } = await supabase
-        .from('players')
+      const { data: players, error: playersError } = await (supabase
+        .from('players') as any)
         .select('*')
-        .eq('team_id', team.id)
+        .eq('team_id', (team as any).id)
         .order('jersey_number', { ascending: true })
       
       if (playersError) throw playersError
 
       // 3. Get next matches for this team
-      const { data: matches, error: matchesError } = await supabase
-        .from('matches')
+      const { data: matches, error: matchesError } = await (supabase
+        .from('matches') as any)
         .select('*, home_team:home_team_id(*), away_team:away_team_id(*), venue:venue_id(*)')
-        .or(`home_team_id.eq.${team.id},away_team_id.eq.${team.id}`)
+        .or(`home_team_id.eq.${(team as any).id},away_team_id.eq.${(team as any).id}`)
         .order('scheduled_at', { ascending: true })
         .limit(5)
       
@@ -36,8 +36,8 @@ export function useTeamDetail(slug: string) {
 
       return {
         team: team as Team,
-        players: players as Player[],
-        matches: matches || []
+        players: (players as any) as Player[],
+        matches: (matches as any) || []
       }
     }
   })

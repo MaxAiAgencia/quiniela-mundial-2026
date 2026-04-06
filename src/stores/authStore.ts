@@ -41,7 +41,7 @@ export const useAuthStore = create<AuthStore>()(
           .single()
 
         if (data) {
-          set({ profile: data, isAdmin: data.is_admin })
+          set({ profile: data as Profile, isAdmin: (data as any).is_admin || false })
         }
       },
 
@@ -70,13 +70,13 @@ export const useAuthStore = create<AuthStore>()(
       updateProfile: async (data: Partial<Profile>) => {
         const { user } = get()
         if (!user) return
-        const { data: updated } = await supabase
-          .from('profiles')
+        const { data: updated } = await (supabase
+          .from('profiles') as any)
           .update(data)
           .eq('id', user.id)
           .select()
           .single()
-        if (updated) set({ profile: updated })
+        if (updated) set({ profile: updated as Profile })
       },
     }),
     {

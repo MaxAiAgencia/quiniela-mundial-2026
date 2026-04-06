@@ -1,4 +1,3 @@
-import React from 'react'
 import { useGroups } from '@/hooks/useGroups'
 import { useMatches } from '@/hooks/useMatches'
 import { GroupTable } from '@/components/group/GroupTable'

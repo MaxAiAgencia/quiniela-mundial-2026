@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { MapPin, Users, Info } from 'lucide-react'
+import { MapPin, Users } from 'lucide-react'
 import { Venue } from '@/hooks/useVenues'
 
 interface VenueCardProps {

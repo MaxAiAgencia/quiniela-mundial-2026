@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { Team } from '@/types'
 import { cn } from '@/lib/utils'
 import { getFlagUrl } from '@/lib/flags'
-import { Badge } from '@/components/ui/badge'
 
 interface TeamCardProps {
   team: Team
