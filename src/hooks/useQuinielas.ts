@@ -17,7 +17,7 @@ export function useQuinielas() {
         .from('quinielas')
         .select(`
           *,
-          profiles (username, display_name, avatar_url)
+          profiles!quinielas_admin_id_fkey (username, display_name, avatar_url)
         `)
         .eq('status', 'open')
         .order('created_at', { ascending: false })

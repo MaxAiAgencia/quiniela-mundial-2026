@@ -3,9 +3,13 @@ import { Outlet, useLocation } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sidebar, BottomNav, MobileSidebar } from './Navigation'
+import { useAuthStore } from '@/stores/authStore'
+import { User, LogIn } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export function MainLayout() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { user } = useAuthStore()
   const location = useLocation()
 
   return (
@@ -33,10 +37,22 @@ export function MainLayout() {
           >
             <Menu className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-1">
             <div className="w-6 h-6 rounded bg-gradient-to-br from-fifa-gold to-gold-dark flex items-center justify-center text-[10px]">🏆</div>
             <span className="font-display text-base text-fifa-white tracking-wide">MUNDIAL 2026</span>
           </div>
+
+          <Link
+            to={user ? '/dashboard' : '/login'}
+            className="p-2 text-muted-foreground hover:text-white transition-colors"
+            aria-label={user ? 'Mi Perfil' : 'Entrar'}
+          >
+            {user ? (
+              <User className="w-5 h-5 text-fifa-gold" />
+            ) : (
+              <LogIn className="w-5 h-5" />
+            )}
+          </Link>
         </header>
 
         {/* Page Content */}

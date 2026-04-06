@@ -43,10 +43,10 @@ export function Sidebar({ onClose, mobile }: SidebarProps) {
         {mobile && (
           <button
             onClick={onClose}
-            className="text-muted-foreground hover:text-white transition-colors p-1"
+            className="text-muted-foreground hover:text-white transition-colors h-10 w-10 flex items-center justify-center rounded-full hover:bg-white/5 active:scale-90"
             aria-label="Cerrar menú"
           >
-            <X className="w-5 h-5" />
+            <X className="w-6 h-6" />
           </button>
         )}
       </div>
@@ -158,7 +158,7 @@ const bottomNavItems = [
   { path: '/',              label: 'Inicio',      icon: Home },
   { path: '/grupos',        label: 'Grupos',      icon: Globe2 },
   { path: '/calendario',    label: 'Partidos',    icon: Calendar },
-  { path: '/quiniela',      label: 'Quiniela',    icon: Target },
+  { path: '/quiniela',      label: 'Quinielas',   icon: Target },
   { path: '/eliminatorias', label: 'Bracket',     icon: Trophy },
 ]
 

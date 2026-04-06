@@ -43,8 +43,8 @@ export default function GruposPage() {
       </header>
 
       <Tabs defaultValue="A" className="space-y-6">
-        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md py-4 border-b">
-          <TabsList className="bg-muted/50 p-1 rounded-lg">
+        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md py-4 border-b overflow-x-auto no-scrollbar">
+          <TabsList className="bg-muted/50 p-1 rounded-lg flex w-max min-w-full">
             {groupIds.map((id) => (
               <TabsTrigger 
                 key={id} 
