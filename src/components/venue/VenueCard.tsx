@@ -20,6 +20,7 @@ export function VenueCard({ venue }: VenueCardProps) {
         <img
           src={venue.image_url || `https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=800&auto=format&fit=crop`}
           alt={venue.name}
+          crossOrigin="anonymous"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
         
