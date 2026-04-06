@@ -2,20 +2,14 @@ import { motion } from 'framer-motion'
 import { Trophy, Users, TrendingUp, ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useMatches } from '@/hooks/useMatches'
-import { useNews } from '@/hooks/useNews'
 import { MatchCard } from '@/components/match/MatchCard'
-import { NewsCard } from '@/components/news/NewsCard'
 
 export default function HomePage() {
   const { data: matches } = useMatches()
-  const { data: news } = useNews()
 
   // Get next 3 upcoming matches
   const nextMatches = matches?.filter(m => m.status === 'scheduled')
     .slice(0, 3) || []
-
-  // Get 3 featured news
-  const featuredNews = news?.slice(0, 3) || []
 
   return (
     <div className="pb-24 lg:pb-12">
@@ -110,24 +104,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {nextMatches.map(match => (
               <MatchCard key={match.id} match={match} />
-            ))}
-          </div>
-        </section>
-
-        {/* Featured News */}
-        <section className="space-y-6">
-          <div className="flex items-end justify-between">
-            <div className="space-y-1">
-              <h2 className="font-display text-2xl text-fifa-white uppercase tracking-wider">Últimas Noticias</h2>
-              <p className="text-sm text-muted-foreground">Lo que pasa en el mundo FIFA</p>
-            </div>
-            <Link to="/noticias" className="text-fifa-gold text-sm font-bold flex items-center gap-2 group">
-              VER TODAS <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredNews.map(article => (
-              <NewsCard key={article.id} article={article} />
             ))}
           </div>
         </section>
