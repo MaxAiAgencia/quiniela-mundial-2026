@@ -92,6 +92,15 @@ export default function QuinielaNuevaPage() {
 
       if (error) throw error
 
+      // Auto-inscribir al organizador como participante pagado 
+      // para que pueda registrar sus predicciones de inmediato
+      await (supabase.from('quiniela_participants') as any).insert({
+        quiniela_id: (data as any).id,
+        user_id: user.id,
+        paid: true,
+        payment_proof_url: null,
+      })
+
       toast.success('¡Quiniela creada con éxito!')
       navigate(`/quiniela/${(data as any).id}`)
     } catch (error: any) {
