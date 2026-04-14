@@ -10,18 +10,35 @@ FOR SELECT USING (
   quiniela_id IN (SELECT id FROM quinielas WHERE admin_id = auth.uid())
 );
 
--- 2. Blindaje de Estatus "PAID" (Para que el usuario no pueda hackear su estatus)
-DROP POLICY IF EXISTS "participants_update" ON quiniela_participants;
+-- 2. Gestión de Participantes (Evitar recursión infinita en RLS)
+DROP POLICY IF EXISTS "participants_select" ON quiniela_participants;
+DROP POLICY IF EXISTS "participants_select_v2" ON quiniela_participants;
+CREATE POLICY "participants_select_v2" ON public.quiniela_participants
+FOR SELECT TO authenticated
+USING (
+  user_id = auth.uid() 
+  OR EXISTS (SELECT 1 FROM public.quinielas WHERE id = quiniela_id AND admin_id = auth.uid())
+  OR EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND is_admin = true)
+  OR true -- Lectura pública autenticada para rankings
+);
 
--- El usuario solo puede subir su comprobante si NO ha sido pagado aún
--- El usuario solo puede actualizar su propia fila (por ejemplo para subir comprobante)
-CREATE POLICY "participants_update_user" ON public.quiniela_participants 
-FOR UPDATE USING (auth.uid() = user_id)
+DROP POLICY IF EXISTS "participants_insert" ON quiniela_participants;
+CREATE POLICY "participants_insert_v3" ON public.quiniela_participants
+FOR INSERT TO authenticated
 WITH CHECK (auth.uid() = user_id);
 
--- El Admin (Tú) puede cambiar todo
-CREATE POLICY "participants_update_admin" ON public.quiniela_participants 
-FOR UPDATE USING (
+DROP POLICY IF EXISTS "participants_update_user" ON quiniela_participants;
+DROP POLICY IF EXISTS "participants_update_user_v2" ON quiniela_participants;
+CREATE POLICY "participants_update_user_v2" ON public.quiniela_participants 
+FOR UPDATE TO authenticated
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "participants_update_admin" ON quiniela_participants;
+DROP POLICY IF EXISTS "participants_update_admin_v2" ON quiniela_participants;
+CREATE POLICY "participants_update_admin_v2" ON public.quiniela_participants 
+FOR UPDATE TO authenticated
+USING (
   quiniela_id IN (SELECT id FROM quinielas WHERE admin_id = auth.uid()) OR
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = TRUE)
 );
