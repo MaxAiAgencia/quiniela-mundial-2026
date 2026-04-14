@@ -47,7 +47,7 @@ export function useAvailableQuinielas() {
       const { data, error } = await supabase
         .from('quinielas')
         .select('*')
-        .eq('status', 'active')
+        .eq('status', 'open')
         .order('created_at', { ascending: false })
 
       if (error) throw error

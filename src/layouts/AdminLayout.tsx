@@ -1,16 +1,17 @@
 import React from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
-import { 
-  LayoutDashboard, 
-  CreditCard, 
-  Trophy, 
-  Users, 
-  Settings, 
+import {
+  LayoutDashboard,
+  CreditCard,
+  Trophy,
+  Users,
+  Settings,
   History,
   ShieldCheck,
   ChevronRight
 } from 'lucide-react'
+import { useAuthStore } from '@/stores/authStore'
 
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -23,6 +24,7 @@ const navItems = [
 
 export const AdminLayout: React.FC<{ children?: React.ReactNode }> = () => {
   const location = useLocation()
+  const { profile } = useAuthStore()
 
   return (
     <div className="flex min-h-screen bg-slate-50 font-sans">
@@ -65,9 +67,17 @@ export const AdminLayout: React.FC<{ children?: React.ReactNode }> = () => {
 
         <div className="mt-auto p-6 border-t border-slate-100 bg-slate-50/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-slate-200 border-2 border-white shadow-sm overflow-hidden" />
+            {profile?.avatar_url ? (
+              <img src={profile.avatar_url} alt="" className="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-indigo-100 border-2 border-white shadow-sm flex items-center justify-center text-indigo-600 font-black text-sm">
+                {(profile?.display_name || profile?.username || 'A').charAt(0).toUpperCase()}
+              </div>
+            )}
             <div>
-              <p className="text-xs font-black text-slate-900 leading-none">Efraín Sosa</p>
+              <p className="text-xs font-black text-slate-900 leading-none truncate max-w-[140px]">
+                {profile?.display_name || profile?.username || 'Admin'}
+              </p>
               <p className="text-[10px] font-bold text-slate-500 uppercase mt-1">Super Admin</p>
             </div>
           </div>

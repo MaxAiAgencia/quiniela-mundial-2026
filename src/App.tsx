@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { lazy, Suspense, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 import { MainLayout } from '@/components/layout/MainLayout'
@@ -32,6 +32,15 @@ function PageLoader() {
       </div>
     </div>
   )
+}
+
+// ─── Admin Route Guard ────────────────────────────────────────
+function AdminGuard({ children }: { children: React.ReactNode }) {
+  const { isAdmin, isLoading, user } = useAuthStore()
+  if (isLoading) return <PageLoader />
+  if (!user) return <Navigate to="/login" replace />
+  if (!isAdmin) return <Navigate to="/" replace />
+  return <>{children}</>
 }
 
 // ─── TanStack Query ───────────────────────────────────────────
@@ -84,7 +93,7 @@ export default function App() {
               <Route path="quiniela/:id"        element={<QuinielaDetallePage />} />
               <Route path="login"               element={<LoginPage />} />
               <Route path="dashboard"           element={<DashboardPage />} />
-              <Route path="admin/*"             element={<AdminPage />} />
+              <Route path="admin/*"             element={<AdminGuard><AdminPage /></AdminGuard>} />
               <Route path="*"                   element={<NotFoundPage />} />
             </Route>
           </Routes>

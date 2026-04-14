@@ -42,6 +42,10 @@ export function useAdminStats() {
 
       if (pError || ppError) throw pError || ppError
 
+      const worldCupStart = new Date('2026-06-11T00:00:00')
+      const today = new Date()
+      const daysToWorldCup = Math.max(0, Math.ceil((worldCupStart.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)))
+
       return {
         totalCollected,
         saasProfit,
@@ -49,7 +53,7 @@ export function useAdminStats() {
         participantsCount: participantsCount || 0,
         pendingPayments: pendingPayments || 0,
         quinielas: qData || [], // Toda la lista para gestión
-        daysToWorldCup: 68
+        daysToWorldCup
       }
     }
   })

@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { useAdminStats } from '@/hooks/useAdminStats'
-import { 
-  DollarSign, 
-  Users, 
+import {
+  DollarSign,
+  Users,
   AlertCircle,
   TrendingUp,
   Clock,
@@ -16,9 +16,11 @@ import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function AdminDashboard() {
   const { data: stats, isLoading } = useAdminStats()
+  const queryClient = useQueryClient()
 
   const dashboardStats = [
     { 
@@ -163,8 +165,7 @@ export default function AdminDashboard() {
                                 .eq('id', q.id)
                               if (error) throw error
                               toast.success(q.is_activated ? 'Quiniela desactivada' : '¡Quiniela activada!')
-                              // Forzamos refetch de admin stats
-                              window.location.reload()
+                              queryClient.invalidateQueries({ queryKey: ['admin-stats'] })
                            } catch (e: any) {
                               toast.error('Error: ' + e.message)
                            }
@@ -234,7 +235,7 @@ export default function AdminDashboard() {
                   <Clock className="w-3 h-3" />
                   Próximo Inicio
                </div>
-               <p className="text-2xl font-black text-white tracking-tighter">68 Días</p>
+               <p className="text-2xl font-black text-white tracking-tighter">{stats?.daysToWorldCup ?? '—'} Días</p>
             </div>
           </CardContent>
           <TrendingUp className="absolute -bottom-8 -right-8 w-40 h-40 text-indigo-800/30 rotate-12 pointer-events-none" />
