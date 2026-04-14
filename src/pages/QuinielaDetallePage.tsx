@@ -26,7 +26,7 @@ import { Button } from '@/components/ui/button'
 import { useDeleteQuiniela } from '@/hooks/useQuiniela'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { Trash2, Settings, Check, X } from 'lucide-react'
+import { Trash2, Settings } from 'lucide-react'
 
 export default function QuinielaDetallePage() {
   const { id } = useParams()
