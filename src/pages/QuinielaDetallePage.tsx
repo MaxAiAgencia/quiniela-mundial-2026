@@ -23,11 +23,20 @@ import { useAuthStore } from '@/stores/authStore'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { useDeleteQuiniela } from '@/hooks/useQuiniela'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Trash2, Settings, Check, X } from 'lucide-react'
 
 export default function QuinielaDetallePage() {
   const { id } = useParams()
   const { user } = useAuthStore()
+  const navigate = useNavigate()
   const { data: q, isLoading, refetch } = useQuiniela(id!)
+  const { mutate: deleteQuiniela, isPending: isDeletingInProgress } = useDeleteQuiniela()
+
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [confirmName, setConfirmName] = useState('')
 
   if (isLoading) return (
     <div className="p-8 max-w-5xl mx-auto space-y-8 animate-pulse text-center py-20">
@@ -76,6 +85,42 @@ export default function QuinielaDetallePage() {
     } catch (error: any) {
       toast.error('Error al unirse: ' + error.message)
     }
+  }
+
+  const handleFixParticipation = async () => {
+    if (!user || !isOrganiser) return
+    try {
+      const { error } = await (supabase
+        .from('quiniela_participants') as any)
+        .upsert({
+          quiniela_id: id,
+          user_id: user.id,
+          paid: true,
+          payment_proof_url: null
+        })
+      if (error) throw error
+      toast.success('¡Tu cuenta ha sido activada correctamente!')
+      refetch()
+    } catch (error: any) {
+      toast.error('Error al activar cuenta: ' + error.message)
+    }
+  }
+
+  const handleDelete = () => {
+    if (confirmName !== q.name) {
+      toast.error('El nombre no coincide exactamente.')
+      return
+    }
+
+    deleteQuiniela(id!, {
+      onSuccess: () => {
+        toast.success('Quiniela eliminada con éxito.')
+        navigate('/mis-quinielas')
+      },
+      onError: (err: any) => {
+        toast.error('Error al eliminar: ' + err.message)
+      }
+    })
   }
 
   return (
@@ -127,15 +172,23 @@ export default function QuinielaDetallePage() {
               </p>
             </div>
             
-            <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-indigo-300/60">
-               <div className="flex flex-col items-center gap-1.5 p-4 bg-indigo-950/40 rounded-2xl border border-indigo-800/30">
-                  <DollarSign className="w-5 h-5 text-indigo-400" />
-                  Coste: <span className="text-white text-base">${q.cost_mxn}</span>
-               </div>
-               <div className="flex flex-col items-center gap-1.5 p-4 bg-indigo-950/40 rounded-2xl border border-indigo-800/30 text-center">
-                  <Users className="w-5 h-5 text-indigo-400" />
-                  Cupos: <span className="text-white text-base">{q.max_participants || '∞'}</span>
-               </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-indigo-300/60">
+                 <div className="flex flex-col items-center gap-1.5 p-4 bg-indigo-950/40 rounded-2xl border border-indigo-800/30">
+                    <DollarSign className="w-5 h-5 text-indigo-400" />
+                    Coste: <span className="text-white text-base">${q.cost_mxn}</span>
+                 </div>
+                 <div className="flex flex-col items-center gap-1.5 p-4 bg-indigo-950/40 rounded-2xl border border-indigo-800/30 text-center">
+                    <Users className="w-5 h-5 text-indigo-400" />
+                    Cupos: <span className="text-white text-base">{q.max_participants || '∞'}</span>
+                 </div>
+              </div>
+
+              {isOrganiser && (
+                <div className="p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-all cursor-pointer border border-white/5" onClick={() => setIsDeleting(true)}>
+                  <Settings className="w-5 h-5 text-white/50" />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -206,6 +259,15 @@ export default function QuinielaDetallePage() {
                   >
                     {isActivated ? "UNIRME AHORA" : "BLOQUEADO"}
                   </Button>
+                  {isOrganiser && !q.my_participation && (
+                    <Button 
+                      onClick={handleFixParticipation}
+                      variant="link"
+                      className="text-indigo-600 p-0 h-auto text-[8px] font-black uppercase mt-2 hover:no-underline opacity-60 hover:opacity-100"
+                    >
+                      FORZAR ACTIVACIÓN ORGANIZADOR
+                    </Button>
+                  )}
                 </div>
               </div>
             )}
@@ -329,6 +391,57 @@ export default function QuinielaDetallePage() {
           </div>
         </div>
       </div>
+
+      {/* Modal de Borrado */}
+      {isDeleting && (
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-[40px] max-w-md w-full p-8 space-y-6 shadow-2xl border-4 border-red-50 relative overflow-hidden">
+            <div className="relative z-10 space-y-6">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto text-red-600 border border-red-100">
+                  <Trash2 className="w-8 h-8" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="text-xl font-black uppercase tracking-tighter text-slate-900 leading-none">Borrado Definitivo</h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Esta acción no se puede deshacer.</p>
+                </div>
+              </div>
+
+              <div className="p-6 bg-red-50/50 rounded-3xl border border-red-100 space-y-4">
+                <p className="text-xs text-red-900 font-medium leading-relaxed">
+                  Para confirmar que deseas eliminar <strong>{q.name}</strong> y todos sus datos (participantes y predicciones), escribe el nombre exacto del torneo abajo:
+                </p>
+                <input 
+                  type="text" 
+                  value={confirmName}
+                  onChange={(e) => setConfirmName(e.target.value)}
+                  placeholder="Nombre de la quiniela..."
+                  className="w-full h-12 px-5 rounded-2xl border-2 border-red-100 focus:border-red-500 text-sm font-bold placeholder:text-red-200 outline-none transition-all"
+                />
+              </div>
+
+              <div className="flex gap-4">
+                <Button 
+                  variant="outline"
+                  className="flex-1 h-12 rounded-2xl font-black uppercase tracking-widest text-[10px] border-slate-200"
+                  onClick={() => setIsDeleting(false)}
+                >
+                  CANCELAR
+                </Button>
+                <Button 
+                  className="flex-1 h-12 rounded-2xl font-black uppercase tracking-widest text-[10px] bg-red-600 hover:bg-black text-white border-none shadow-lg shadow-red-600/20"
+                  disabled={confirmName !== q.name || isDeletingInProgress}
+                  onClick={handleDelete}
+                >
+                  {isDeletingInProgress ? "ELIMINANDO..." : "BORRAR AHORA"}
+                </Button>
+              </div>
+            </div>
+
+            <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-red-500/5 rounded-full pointer-events-none" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

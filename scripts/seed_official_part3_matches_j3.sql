@@ -17,10 +17,9 @@ DECLARE
     v_lumen   UUID := (SELECT id FROM venues WHERE slug = 'lumen-field');
     v_levis   UUID := (SELECT id FROM venues WHERE slug = 'levis-stadium');
     v_arrow   UUID := (SELECT id FROM venues WHERE slug = 'arrowhead-stadium');
-    v_philly  UUID := (SELECT id FROM venues WHERE slug = 'lincoln-financial');
+    v_philly  UUID := (SELECT id FROM venues WHERE slug = 'lincoln-financial-field');
     v_boston  UUID := (SELECT id FROM venues WHERE slug = 'gillette-stadium');
     v_miami   UUID := (SELECT id FROM venues WHERE slug = 'hard-rock-stadium');
-    v_vegas   UUID := (SELECT id FROM venues WHERE slug = 'allegiant-stadium');
     v_houston UUID := (SELECT id FROM venues WHERE slug = 'nrg-stadium');
     v_atlanta UUID := (SELECT id FROM venues WHERE slug = 'mercedes-benz-stadium');
 BEGIN

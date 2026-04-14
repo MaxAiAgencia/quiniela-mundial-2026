@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/authStore'
 
@@ -33,5 +33,24 @@ export function useQuiniela(id: string) {
       }
     },
     enabled: !!id && !!user
+  })
+}
+
+export function useDeleteQuiniela() {
+  const { user } = useAuthStore()
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      if (!user) throw new Error('Debes iniciar sesión')
+      
+      const { error } = await supabase
+        .from('quinielas')
+        .delete()
+        .eq('id', id)
+        .eq('admin_id', user.id) // Seguridad extra
+
+      if (error) throw error
+      return true
+    }
   })
 }

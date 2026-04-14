@@ -94,7 +94,7 @@ export default function QuinielaNuevaPage() {
 
       // Auto-inscribir al organizador como participante pagado 
       // para que pueda registrar sus predicciones de inmediato
-      await (supabase.from('quiniela_participants') as any).insert({
+      await (supabase.from('quiniela_participants') as any).upsert({
         quiniela_id: (data as any).id,
         user_id: user.id,
         paid: true,
